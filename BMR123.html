@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calorie Intake Calculator</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+    .container {
+      background-color: #fff;
+      padding: 25px;
+      margin: 40px auto;
+      width: 400px;
+      box-shadow: 0px 0px 15px #ccc;
+      border-radius: 10px;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, select {
+      margin-top: 5px;
+      padding: 6px;
+      width: 90%;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    input[type="radio"] {
+      width: auto;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+    canvas {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Calorie Intake Calculator</h2>
+
+    <label>Weight (lbs):</label>
+    <input type="number" id="weight" placeholder="Enter your weight">
+
+    <label>Height (inches):</label>
+    <input type="number" id="height" placeholder="Enter your height">
+
+    <label>Age:</label>
+    <input type="number" id="age" placeholder="Enter your age">
+
+    <label>Gender:</label>
+    <input type="radio" id="g1" name="gender" value="male"> Male
+    <input type="radio" id="g2" name="gender" value="female"> Female
+
+    <label>Activity Level:</label>
+    <select id="sel">
+      <option value="1">Sedentary</option>
+      <option value="2">Light Active</option>
+      <option value="3">Moderate</option>
+      <option value="4">Very Active</option>
+      <option value="5">Extra Active</option>
+    </select>
+
+    <br><br>
+    <input type="button" value="Calculate BMR" onclick="calculation();">
+    <div id="result"></div>
+
+    <canvas id="bmrChart" width="300" height="150"></canvas>
+  </div>
+
+  <script>
+    function calculation() {
+      let weight = parseFloat(document.getElementById("weight").value);
+      let height = parseFloat(document.getElementById("height").value);
+      let age = parseInt(document.getElementById("age").value, 10);
+
+      if (isNaN(weight) || isNaN(height) || isNaN(age)) {
+        alert("Please enter valid numbers for weight, height, and age.");
+        return;
+      }
+
+      let bmr;
+      if (document.getElementById("g1").checked) {
+        bmr = 66 + (6.23 * weight) + (12.7 * height) - (6.8 * age);
+      } else if (document.getElementById("g2").checked) {
+        bmr = 655 + (4.35 * weight) + (4.7 * height) - (4.7 * age);
+      } else {
+        alert("Please select your gender.");
+        return;
+      }
+
+      let choice = document.getElementById("sel").value;
+      let calorie_intake;
+
+      if (choice == 1) {
+        calorie_intake = bmr * 1.2;
+      } else if (choice == 2) {
+        calorie_intake = bmr * 1.375;
+      } else if (choice == 3) {
+        calorie_intake = bmr * 1.55;
+      } else if (choice == 4) {
+        calorie_intake = bmr * 1.725;
+      } else {
+        calorie_intake = bmr * 1.9;
+      }
+
+      document.getElementById("result").textContent =
+        "Your estimated daily calorie intake is: " + calorie_intake.toFixed(2) + " kcal";
+
+      
+    }
+  </script>
+
+</body>
+</html>
